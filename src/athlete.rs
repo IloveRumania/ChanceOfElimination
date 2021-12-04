@@ -1,6 +1,6 @@
 use std::cmp::Ordering;
 
-#[derive(Debug, Eq)]
+#[derive(Copy, Clone, Debug, Eq)]
 pub struct Athlete<'a> {
     pub score: u32,
     pub name: &'a str,

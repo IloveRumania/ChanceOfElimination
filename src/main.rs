@@ -2,10 +2,74 @@ mod athlete;
 mod parsing;
 mod simulation;
 
+use rand::Rng;
+
 fn main() {
     let athletes_toml = parsing::parse_athletes_toml_file("data/athletes.toml").unwrap();
-    let simulation_info = parsing::get_simulation_info(&athletes_toml).unwrap();
-    let athletes = parsing::get_athletes(&athletes_toml).unwrap();
+    let mut simulation_info = parsing::get_simulation_info(&athletes_toml).unwrap();
+    simulation_info.original_scores.sort_by(|lhs, rhs| rhs.cmp(lhs));
 
-    println!("{:#?}", athletes);
+    let mut athletes = parsing::get_athletes(&athletes_toml).unwrap();
+    athletes.sort_by(|lhs, rhs| rhs.cmp(lhs));
+
+    let athlete_count = athletes.len();
+    let multiply_factor = simulation_info.per_day_multiplier.powi(
+        (simulation_info.current_event - simulation_info.completed_non_elimination_event_count)
+            as i32,
+    );
+
+    let mut loss_counts = vec![0; athlete_count];
+
+    for i in 1..=simulation_info.simulation_count {
+        let mut shuffled_athletes = vec![None; athlete_count];
+        let mut taken_placings = vec![false; athlete_count];
+
+        let mut current_athletes = athletes.clone();
+
+        for athlete_index in 0..athlete_count {
+            while shuffled_athletes[athlete_index].is_none()
+                || taken_placings[shuffled_athletes[athlete_index].unwrap()]
+            {
+                shuffled_athletes[athlete_index] =
+                    Some(rand::thread_rng().gen_range(0..athlete_count));
+            }
+
+            taken_placings[shuffled_athletes[athlete_index].unwrap()] = true;
+            current_athletes[athlete_index].score += ((simulation_info.original_scores
+                [shuffled_athletes[athlete_index].unwrap()]
+                as f32)
+                * multiply_factor)
+                .round() as u32;
+        }
+
+        let mut lowest_score = u32::max_value();
+        let mut eliminated_athlete_index = 0;
+
+        for athlete_index in 0..athlete_count {
+            if current_athletes[athlete_index].score < lowest_score {
+                lowest_score = current_athletes[athlete_index].score;
+                eliminated_athlete_index = athlete_index;
+            }
+        }
+
+        loss_counts[eliminated_athlete_index] += 1;
+
+        if i % (simulation_info.simulation_count / 20) == 0 {
+            println!("{:.0}% done ({}/{}).", (i as f32) / simulation_info.simulation_count as f32 * 100.0, i, simulation_info.simulation_count);
+        }
+    }
+
+    println!("\n---------------------------------\n");
+
+    for athlete_index in 0..athlete_count {
+        print!("{}'s percentage: ", athletes[athlete_index].name);
+
+        let percentage = (loss_counts[athlete_index] as f32) / (simulation_info.simulation_count as f32) * 100.0;
+
+        if percentage < 0.1 {
+            println!("<0.1%");
+        } else {
+            println!("{:.1}%", percentage);
+        }
+    }
 }

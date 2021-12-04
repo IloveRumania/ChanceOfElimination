@@ -41,9 +41,15 @@ pub fn get_athletes(toml: &Value) -> Option<Vec<Athlete>> {
         toml["athletes"]
             .as_array()?
             .iter()
-            .map(|athlete| Athlete {
-                score: athlete["score"].as_integer().unwrap() as u32,
-                name: athlete["name"].as_str().unwrap(),
+            .filter_map(|athlete| {
+                if athlete["eliminated"].as_bool().unwrap_or_default() {
+                    None
+                } else {
+                    Some(Athlete {
+                        score: athlete["score"].as_integer().unwrap() as u32,
+                        name: athlete["name"].as_str().unwrap(),
+                    })
+                }
             })
             .collect::<Vec<_>>(),
     )
