@@ -5,6 +5,8 @@ mod simulation;
 use num_format::{Locale, ToFormattedString};
 use rand::Rng;
 
+use athlete::Athlete;
+
 fn main() {
     let athletes_toml = parsing::parse_athletes_toml_file("data/athletes.toml").unwrap();
     let mut simulation_info = parsing::get_simulation_info(&athletes_toml).unwrap();
@@ -69,13 +71,21 @@ fn main() {
         }
     }
 
+    display_results(&athletes, &loss_counts, simulation_info.simulation_count);
+}
+
+fn display_results(athletes: &[Athlete], loss_counts: &[u32], simulation_count: u32) {
+    assert_eq!(athletes.len(), loss_counts.len());
+
+    let athlete_count = athletes.len();
+
     println!("\n---------------------------------\n");
 
     for athlete_index in 0..athlete_count {
         print!("{}'s percentage: ", athletes[athlete_index].name);
 
         let percentage =
-            (loss_counts[athlete_index] as f32) / (simulation_info.simulation_count as f32) * 100.0;
+            (loss_counts[athlete_index] as f32) / (simulation_count as f32) * 100.0;
 
         if percentage < 0.1 && percentage != 0.0 {
             println!("<0.1%");
