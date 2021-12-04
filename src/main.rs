@@ -2,12 +2,15 @@ mod athlete;
 mod parsing;
 mod simulation;
 
+use num_format::{Locale, ToFormattedString};
 use rand::Rng;
 
 fn main() {
     let athletes_toml = parsing::parse_athletes_toml_file("data/athletes.toml").unwrap();
     let mut simulation_info = parsing::get_simulation_info(&athletes_toml).unwrap();
-    simulation_info.original_scores.sort_by(|lhs, rhs| rhs.cmp(lhs));
+    simulation_info
+        .original_scores
+        .sort_by(|lhs, rhs| rhs.cmp(lhs));
 
     let mut athletes = parsing::get_athletes(&athletes_toml).unwrap();
     athletes.sort_by(|lhs, rhs| rhs.cmp(lhs));
@@ -55,7 +58,14 @@ fn main() {
         loss_counts[eliminated_athlete_index] += 1;
 
         if i % (simulation_info.simulation_count / 20) == 0 {
-            println!("{:.0}% done ({}/{}).", (i as f32) / simulation_info.simulation_count as f32 * 100.0, i, simulation_info.simulation_count);
+            println!(
+                "{:.0}% done ({}/{}).",
+                (i as f32) / simulation_info.simulation_count as f32 * 100.0,
+                i.to_formatted_string(&Locale::en),
+                simulation_info
+                    .simulation_count
+                    .to_formatted_string(&Locale::en),
+            );
         }
     }
 
@@ -64,9 +74,10 @@ fn main() {
     for athlete_index in 0..athlete_count {
         print!("{}'s percentage: ", athletes[athlete_index].name);
 
-        let percentage = (loss_counts[athlete_index] as f32) / (simulation_info.simulation_count as f32) * 100.0;
+        let percentage =
+            (loss_counts[athlete_index] as f32) / (simulation_info.simulation_count as f32) * 100.0;
 
-        if percentage < 0.1 {
+        if percentage < 0.1 && percentage != 0.0 {
             println!("<0.1%");
         } else {
             println!("{:.1}%", percentage);
