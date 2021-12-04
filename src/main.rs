@@ -18,9 +18,10 @@ struct SimulationInfo {
 
 fn main() {
     let athletes_toml = parse_athletes_toml_file("data/athletes.toml").unwrap();
-    let simulation_info = get_simulation_info(&athletes_toml);
+    let simulation_info = get_simulation_info(&athletes_toml).unwrap();
+    let athletes = get_athletes(&athletes_toml).unwrap();
 
-    println!("{:#?}", simulation_info);
+    println!("{:#?}", athletes);
 }
 
 fn parse_athletes_toml_file(path: &str) -> Result<Value, Box<dyn Error>> {
@@ -37,17 +38,31 @@ fn get_simulation_info(toml: &Value) -> Option<SimulationInfo> {
         .iter()
         .map(|score| score.as_integer().unwrap() as u32)
         .collect::<Vec<_>>();
-    
+
     let current_event = toml["current_event"].as_integer()? as u32;
-    let completed_non_elimination_event_count = toml["completed_non_elimination_event_count"].as_integer()? as u32;
+    let completed_non_elimination_event_count =
+        toml["completed_non_elimination_event_count"].as_integer()? as u32;
 
     let per_day_multiplier = toml["per_day_multiplier"].as_float()? as f32;
 
-    Some(SimulationInfo{
+    Some(SimulationInfo {
         simulation_count,
         original_scores,
         current_event,
         completed_non_elimination_event_count,
         per_day_multiplier,
     })
+}
+
+fn get_athletes(toml: &Value) -> Option<Vec<Athlete>> {
+    Some(
+        toml["athletes"]
+            .as_array()?
+            .iter()
+            .map(|athlete| Athlete {
+                score: athlete["score"].as_integer().unwrap() as u32,
+                name: athlete["name"].as_str().unwrap(),
+            })
+            .collect::<Vec<_>>(),
+    )
 }
