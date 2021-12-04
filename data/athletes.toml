@@ -1,0 +1,157 @@
+# The number of simulations to run. The higher this is, the more accurate the results, but the longer it will take.
+simulation_count = 10_000_000
+
+# The original scores on day one.
+# The scores do not need to be in descending order - this will be done automatically.
+original_scores = [
+    100, 90, 80, 70, 60, 55, 50, 45, 40, 35, 30, 25, 22, 20, 18, 16, 14, 12, 10, 8, 7, 6, 5, 4, 3, 2, 1,
+]
+
+# The current event number.
+current_event = 1
+
+# The number of completed events that did not involve elimination (such as team events).
+completed_non_elimination_event_count = 0
+
+# How much the scores will increase per day (for example: 1.5 = 150%).
+per_day_multiplier = 1.5
+
+# List of athletes.
+#     name: The athlete's display name.
+#     score: The athlete's current score.
+#     eliminated: Whether the athlete is eliminated or not.
+# The athletes do not need to be in order of their scores - this will be done automatically.
+[[athletes]]
+name = "Azure"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Black"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Blue"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Brown"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Cyan"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Dark Green"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Gold"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Green"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Grey"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Indigo"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Lavender"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Lime"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Magenta"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Maroon"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Navy"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Olive"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Orange"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Peach"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Pink"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Purple"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Red"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Silver"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Tan"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Teal"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Turquoise"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "White"
+score = 0
+eliminated = false
+
+[[athletes]]
+name = "Yellow"
+score = 0
+eliminated = false
