@@ -50,9 +50,9 @@ fn main() {
         let mut lowest_score = u32::max_value();
         let mut eliminated_athlete_index = 0;
 
-        for athlete_index in 0..athlete_count {
-            if current_athletes[athlete_index].score < lowest_score {
-                lowest_score = current_athletes[athlete_index].score;
+        for (athlete_index, athlete) in current_athletes.iter().enumerate() {
+            if athlete.score < lowest_score {
+                lowest_score = athlete.score;
                 eliminated_athlete_index = athlete_index;
             }
         }
