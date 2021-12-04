@@ -7,7 +7,7 @@ original_scores = [
     100, 90, 80, 70, 60, 55, 50, 45, 40, 35, 30, 25, 22, 20, 18, 16, 14, 12, 10, 8, 7, 6, 5, 4, 3, 2, 1,
 ]
 
-# The current event number.
+# The current event/day number.
 current_event = 1
 
 # The number of completed events that did not involve elimination (such as team events).
