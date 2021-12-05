@@ -21,7 +21,7 @@ fn main() {
 
     let athlete_count = athletes.len();
     let multiply_factor = simulation_info.per_day_multiplier.powi(
-        (simulation_info.current_event - simulation_info.completed_non_elimination_event_count)
+        (simulation_info.current_event - simulation_info.completed_non_elimination_event_count - 1)
             as i32,
     );
 
