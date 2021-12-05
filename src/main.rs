@@ -2,6 +2,8 @@ mod athlete;
 mod parsing;
 mod simulation;
 
+use std::io::{self, prelude::*};
+
 use num_format::{Locale, ToFormattedString};
 use rand::Rng;
 
@@ -72,6 +74,7 @@ fn main() {
     }
 
     display_results(&athletes, &loss_counts, simulation_info.simulation_count);
+    pause_console();
 }
 
 fn display_results(athletes: &[Athlete], loss_counts: &[u32], simulation_count: u32) {
@@ -93,4 +96,11 @@ fn display_results(athletes: &[Athlete], loss_counts: &[u32], simulation_count: 
             println!("{:.1}%", percentage);
         }
     }
+}
+
+fn pause_console() {
+    print!("Press enter to exit...");
+    io::stdout().flush().unwrap();
+
+    io::stdin().read(&mut [0]).unwrap();
 }
