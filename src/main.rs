@@ -87,8 +87,7 @@ fn display_results(athletes: &[Athlete], loss_counts: &[u32], simulation_count: 
     for athlete_index in 0..athlete_count {
         print!("{}'s percentage: ", athletes[athlete_index].name);
 
-        let percentage =
-            (loss_counts[athlete_index] as f32) / (simulation_count as f32) * 100.0;
+        let percentage = (loss_counts[athlete_index] as f32) / (simulation_count as f32) * 100.0;
 
         if percentage < 0.1 && percentage != 0.0 {
             println!("<0.1%");
@@ -102,5 +101,5 @@ fn pause_console() {
     print!("Press enter to exit...");
     io::stdout().flush().unwrap();
 
-    io::stdin().read(&mut [0]).unwrap();
+    io::stdin().read_exact(&mut [0]).unwrap();
 }
